@@ -1,0 +1,2329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Freisam App — Sistema Operacional &amp; Comercial</title>
+<style>
+  :root {
+    --primary: #1b6b3a;
+    --primary-dark: #124a28;
+    --primary-light: #e8f5ee;
+    --accent: #e09f1f;
+    --danger: #c62828;
+    --danger-light: #fdecea;
+    --warn: #d98200;
+    --warn-light: #fff6e0;
+    --ok: #1b6b3a;
+    --ok-light: #e7f6ed;
+    --bg: #f3f6f4;
+    --card: #ffffff;
+    --text: #162019;
+    --muted: #59685e;
+    --border: #dce4df;
+    --shadow: 0 2px 8px rgba(15, 35, 22, 0.06);
+  }
+
+  * {
+    box-sizing: border-box;
+    max-width: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden !important;
+    overflow-y: auto;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .app-shell {
+    width: 100%;
+    max-width: 780px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding: 12px 12px 48px 12px;
+    overflow-x: hidden;
+  }
+
+  .topbar {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: #fff;
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+  }
+
+  .topbar-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .brand-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .brand-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 3px solid #7ef0a6;
+    background: rgba(255,255,255,0.16);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .brand-title {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.2px;
+  }
+
+  .brand-sub {
+    font-size: 12px;
+    opacity: 0.92;
+  }
+
+  .sync-pill {
+    font-size: 11px;
+    font-weight: 700;
+    background: rgba(255,255,255,0.18);
+    padding: 5px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .nav-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .nav-btn {
+    border: none;
+    border-radius: 10px;
+    padding: 8px 11px;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    background: rgba(255,255,255,0.16);
+    color: #fff;
+  }
+
+  .nav-btn.active {
+    background: #ffffff;
+    color: var(--primary-dark);
+  }
+
+  .nav-btn.danger-btn {
+    background: rgba(198, 40, 40, 0.88);
+    color: #fff;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+  }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 800;
+    margin: 0 0 6px 0;
+    color: var(--primary-dark);
+  }
+
+  .muted {
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .banner-greet {
+    background: var(--ok-light);
+    border: 1px solid #b5dfc4;
+    color: var(--primary-dark);
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .field-group {
+    margin-bottom: 10px;
+  }
+
+  label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #c5d1ca;
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: inherit;
+    background: #fff;
+    color: var(--text);
+  }
+
+  input:focus, select:focus, textarea:focus {
+    outline: 2px solid var(--primary);
+    border-color: var(--primary);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-secondary { background: #e8efea; color: var(--text); }
+  .btn-warn { background: var(--accent); color: #1a1404; }
+  .btn-danger { background: var(--danger); color: #fff; }
+  .btn-sm { padding: 7px 11px; font-size: 12.5px; }
+  .btn-block { width: 100%; }
+
+  .btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  /* Grade 4 colunas no ADM com protecao contra overflow horizontal */
+  .adm-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  @media (max-width: 560px) {
+    .adm-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .balloon-tile {
+    background: var(--primary-light);
+    border: 1px solid #c2decb;
+    border-radius: 12px;
+    padding: 10px 8px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    min-height: 76px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    word-break: break-word;
+  }
+
+  .balloon-tile:active {
+    transform: scale(0.98);
+  }
+
+  .balloon-tile.security-tile {
+    background: #232925;
+    color: #fff;
+    border-color: #111512;
+  }
+
+  .balloon-title {
+    font-size: 12.5px;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  .balloon-tag {
+    font-size: 10px;
+    opacity: 0.8;
+    font-weight: 600;
+  }
+
+  /* Grade 3+3 no painel do cliente */
+  .client-grid-6 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  @media (max-width: 460px) {
+    .client-grid-6 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .square-tile {
+    background: #f7faf8;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 8px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    min-height: 72px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .notice-item {
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border-left: 5px solid var(--warn);
+    background: var(--warn-light);
+  }
+
+  .notice-item.urgent {
+    border-left-color: var(--danger);
+    background: var(--danger-light);
+  }
+
+  .notice-item.ok {
+    border-left-color: var(--ok);
+    background: var(--ok-light);
+  }
+
+  .qty-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  .qty-box input {
+    width: 74px;
+    text-align: center;
+    font-weight: 800;
+  }
+
+  .list-row {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    background: #fcfefd;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+  .badge-ok { background: var(--ok-light); color: var(--primary-dark); }
+  .badge-warn { background: var(--warn-light); color: #8a5000; }
+  .badge-danger { background: var(--danger-light); color: var(--danger); }
+
+  .insta-banner {
+    background: linear-gradient(120deg, #833ab4 0%, #fd1d1d 55%, #fcb045 100%);
+    color: #fff;
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+    font-weight: 800;
+  }
+
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 4px;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  .cal-day {
+    padding: 7px 2px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    background: #f4f7f5;
+  }
+
+  .cal-day.delivery { background: var(--ok-light); color: var(--primary-dark); border: 1px solid #96d3ad; }
+  .cal-day.holiday { background: var(--danger-light); color: var(--danger); border: 1px solid #f0a8a8; }
+
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 18, 13, 0.62);
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 16px 12px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 999;
+  }
+
+  .modal-backdrop.open {
+    display: flex;
+  }
+
+  .modal-box {
+    width: 100%;
+    max-width: 680px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    margin: auto;
+  }
+
+  .modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+  }
+
+  .print-area {
+    background: #fff;
+    border: 1px dashed #8a9990;
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 13px;
+  }
+
+  .print-80mm {
+    max-width: 310px;
+    margin: 10px auto;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 12px;
+    border: 1px solid #444;
+    padding: 10px;
+    background: #fff;
+  }
+
+  @media print {
+    body * { visibility: hidden; }
+    #printable-zone, #printable-zone * { visibility: visible; }
+    #printable-zone {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="app-shell" id="app">
+  <div class="topbar">
+    <div class="topbar-top">
+      <div class="brand-row">
+        <div class="brand-avatar" id="top-logo">FS</div>
+        <div>
+          <div class="brand-title" id="top-company-name">Freisam App</div>
+          <div class="brand-sub" id="top-company-sub">Gestão Comercial, Frota, MEI &amp; Operação</div>
+        </div>
+      </div>
+      <div class="sync-pill" id="sync-indicator">Sincronizado • Local</div>
+    </div>
+    <div class="nav-strip" id="main-nav"></div>
+  </div>
+
+  <div id="greeting-banner" class="banner-greet" style="display:none;">
+    <span id="greeting-text">Bem-vindo!</span>
+    <button class="btn btn-secondary btn-sm" onclick="logoutSession()">Sair / Trocar PIN</button>
+  </div>
+
+  <div id="view-container"></div>
+</div>
+
+<!-- Modal Universal -->
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal-box" id="modal-box">
+    <div class="modal-head">
+      <strong id="modal-title" style="font-size:16px;">Janela</strong>
+      <button class="btn btn-secondary btn-sm" onclick="closeModal()">Fechar</button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- Area de impressao dedicada -->
+<div id="printable-zone" style="display:none;"></div>
+
+<script>
+const STORAGE_KEY = "FREISAM_APP_STATE_V1";
+
+const DEFAULT_PRODUCTS = [
+  { id: "P001", code: "1001", name: "Tomate Italiano", unit: "cx", category: "Hortifruti", cost: 42.00, margin: 35, qtyPerUnit: 1, stock: 28, minStock: 10, lastSaleAt: Date.now() - 86400000 },
+  { id: "P002", code: "1002", name: "Batata Inglesa", unit: "sc", category: "Raízes e Tubérculos", cost: 85.00, margin: 30, qtyPerUnit: 1, stock: 19, minStock: 8, lastSaleAt: Date.now() - 172800000 },
+  { id: "P003", code: "1003", name: "Alface Crespa", unit: "cx", category: "Folhosas", cost: 24.00, margin: 40, qtyPerUnit: 1, stock: 15, minStock: 6, lastSaleAt: Date.now() - 43200000 },
+  { id: "P004", code: "1004", name: "Cebola Roxa", unit: "sc", category: "Hortifruti", cost: 64.00, margin: 32, qtyPerUnit: 1, stock: 6, minStock: 8, lastSaleAt: Date.now() - 1200000000 },
+  { id: "P005", code: "1005", name: "Cenoura Nantes", unit: "cx", category: "Raízes e Tubérculos", cost: 38.00, margin: 35, qtyPerUnit: 1, stock: 22, minStock: 8, lastSaleAt: Date.now() - 86400000 },
+  { id: "P006", code: "1006", name: "Banana Nanica", unit: "cx", category: "Frutas", cost: 36.00, margin: 38, qtyPerUnit: 1, stock: 4, minStock: 10, lastSaleAt: Date.now() - 1500000000 }
+];
+
+const DEFAULT_ADM_BALLOONS = [
+  { id: "b_rotas", title: "Rotas & Prep Carga", tag: "Separação", clbAllowed: true },
+  { id: "b_veiculos", title: "Veículos & Frota", tag: "KM / IPVA", clbAllowed: true },
+  { id: "b_retornos", title: "Retornos & Rota", tag: "Waze / Linha", clbAllowed: true },
+  { id: "b_produtos", title: "Produtos", tag: "Margem / Estoque", clbAllowed: false },
+  { id: "b_compras", title: "Compras", tag: "Paga / Agendada", clbAllowed: false },
+  { id: "b_vendas", title: "Vendas", tag: "+10% / Promo", clbAllowed: true },
+  { id: "b_despesas", title: "Despesas", tag: "Fixa / Quebra", clbAllowed: false },
+  { id: "b_receber", title: "Notas a Receber", tag: "Pix / Quitar", clbAllowed: false },
+  { id: "b_fornecedor", title: "Fornecedor", tag: "Auto-itens", clbAllowed: false },
+  { id: "b_notaspagas", title: "Notas Pagas", tag: "80mm Tomate", clbAllowed: false },
+  { id: "b_programadas", title: "Entregas Programadas", tag: "Fila futura", clbAllowed: true },
+  { id: "b_reclames", title: "Reclames", tag: "Avisos / Limpar", clbAllowed: false },
+  { id: "b_estoque", title: "Estoque", tag: "Balanço / Print", clbAllowed: true },
+  { id: "b_colaboradores", title: "Colaboradores", tag: "CLT / 80mm", clbAllowed: false },
+  { id: "b_mei", title: "MEI & Notas A4", tag: "20% / Limite", clbAllowed: false },
+  { id: "b_relatorio", title: "Relatório A4", tag: "HP Smart Tank", clbAllowed: false },
+  { id: "b_seguranca", title: "Área de Segurança", tag: "Criador", clbAllowed: false, isSecurity: true }
+];
+
+function createInitialState() {
+  const nowStr = new Date().toLocaleDateString("pt-BR");
+  return {
+    activeTab: "login",
+    session: {
+      role: null, // "adm_master" | "adm_2" | "clb" | "client"
+      userName: "",
+      userId: null,
+      clientSince: nowStr
+    },
+    creator: {
+      sigla: "CRI",
+      senha: "123",
+      pin: "9999",
+      nome: "Criador do Sistema",
+      contato: "(00) 00000-0000"
+    },
+    company: {
+      name: "Freisam Comercial",
+      cnpjMei: "00.000.000/0001-00",
+      phoneWhats: "5500000000000",
+      instagramUrl: "https://instagram.com",
+      meiLimitAnnual: 81000,
+      meiUsedAnnual: 14200,
+      meiNoteSeq: 1,
+      pixKeyDefault: "00000000000"
+    },
+    users: [
+      { id: "u_adm1", name: "Administrador Master", role: "adm_master", pin: "1111", birthday: "10/05", functionRole: "Direção / ADM Master", active: true, balloons: DEFAULT_ADM_BALLOONS.map(b => b.id) },
+      { id: "u_adm2", name: "Segundo Admin", role: "adm_2", pin: "2222", birthday: "22/08", functionRole: "Gestão Operacional", active: true, balloons: ["b_rotas", "b_veiculos", "b_retornos", "b_vendas", "b_estoque", "b_programadas"] },
+      { id: "u_clb1", name: "João Separador", role: "clb", pin: "3333", birthday: "14/03", functionRole: "Padrão CLT", active: true, balloons: ["b_rotas", "b_retornos", "b_estoque"], cltData: {
+        cpf: "111.222.333-44",
+        rg: "1234567 SSP/SP",
+        pis: "120.98765.43-2",
+        ctpsDigital: "11122233344",
+        endereco: "Rua das Palmeiras, 120 - Centro",
+        cbo: "5142-25 (Trabalhador de serviços de limpeza e conservação / apoio)",
+        salarioBase: "1850.00",
+        jornada: "Segunda a Sexta 07:00-16:00 (1h intervalo) / Sábado 07:00-11:00",
+        valeTransporte: "Sim",
+        asoStatus: "Agendado"
+      }}
+    ],
+    clients: [
+      { id: "c_1", name: "Mercado Bom Preço", city: "São Paulo", routeId: "r_1", since: "12/01/2025", approved: true, phone: "5511999990001" },
+      { id: "c_2", name: "Empório Central", city: "Guarulhos", routeId: "r_1", since: "04/06/2025", approved: true, phone: "5511999990002" }
+    ],
+    contacts: [
+      { id: "ct_1", name: "Ricardo", role: "Atendimento & Pedidos", phone: "5511988880001" },
+      { id: "ct_2", name: "Erivelto", role: "Logística & Rotas", phone: "5511988880002" },
+      { id: "ct_3", name: "Jônatas", role: "Financeiro & Cobranças", phone: "5511988880003" }
+    ],
+    notices: [
+      { id: "n_1", title: "Corte de pedidos às 15h", text: "Pedidos enviados após 15h entram na programação seguinte.", priority: "normal", requiresAccessApproval: false, clientId: null },
+      { id: "n_2", title: "Solicitação de acesso de cliente", text: "Hortifruti Estrela pediu liberação de acesso ao catálogo.", priority: "urgent", requiresAccessApproval: true, pendingClientName: "Hortifruti Estrela", pendingCity: "Osasco", pendingPhone: "5511977770004" }
+    ],
+    reclames: [
+      { id: "rec_1", date: nowStr, author: "Mercado Bom Preço", priority: "normal", message: "Solicito confirmação da entrega na doca lateral." }
+    ],
+    products: DEFAULT_PRODUCTS,
+    suppliers: [
+      { id: "s_1", name: "Sítio Boa Terra", phone: "5511966660001", itemsSold: ["Tomate Italiano", "Cenoura Nantes"] },
+      { id: "s_2", name: "Fazenda Vale Verde", phone: "5511966660002", itemsSold: ["Batata Inglesa", "Alface Crespa", "Cebola Roxa"] }
+    ],
+    routes: [
+      {
+        id: "r_1",
+        name: "Rota Norte / Leste",
+        cities: ["São Paulo", "Guarulhos"],
+        lastCity: "Guarulhos",
+        vehiclePlate: "ABC-1D23",
+        status: "Aguardando saída",
+        queue: [
+          { id: "q1", clientName: "Mercado Bom Preço", city: "São Paulo", productName: "Tomate Italiano", qty: 5, done: false, resistant: true },
+          { id: "q2", clientName: "Mercado Bom Preço", city: "São Paulo", productName: "Alface Crespa", qty: 4, done: false, resistant: false },
+          { id: "q3", clientName: "Empório Central", city: "Guarulhos", productName: "Batata Inglesa", qty: 6, done: false, resistant: true }
+        ]
+      }
+    ],
+    vehicles: [
+      { id: "v_1", model: "Fiat Fiorino", year: "2022", plate: "ABC-1D23", ipvaDue: "2026-04-30", km: 48250, birthday: "15/03", oilDueKm: 50000, maintenanceAlert: "Revisão de freios preventiva" }
+    ],
+    returns: [
+      { id: "ret_1", clientName: "Empório Central", city: "Guarulhos", reason: "Caixa excedente de embalagem", status: "Pendente", date: nowStr }
+    ],
+    orders: [
+      { id: "ord_101", date: nowStr, clientName: "Mercado Bom Preço", priority: "normal", total: 283.50, paid: false, pixCode: "00020126360014BR.GOV.BCB.PIX0114000000000005204000053039865406283.505802BR5916FREISAM COMERCIAL6009SAO PAULO62070503***6304ABCD", items: [{ name: "Tomate Italiano", qty: 5, price: 56.70 }] }
+    ],
+    scheduledDeliveries: [
+      { id: "sd_1", date: "2026-11-26", clientName: "Empório Central", city: "Guarulhos", summary: "3 cx Tomate Italiano, 2 sc Batata Inglesa", promoted: false }
+    ],
+    purchases: [
+      { id: "pur_1", date: nowStr, supplierName: "Sítio Boa Terra", itemName: "Tomate Italiano", qty: 10, costTotal: 420.00, status: "Paga", dueDate: "" }
+    ],
+    expenses: [
+      { id: "exp_1", date: nowStr, type: "Recorrente", category: "Energia elétrica", amount: 310.00, note: "Conta mensal" },
+      { id: "exp_2", date: nowStr, type: "Quebra de produto", category: "Banana Nanica", amount: 72.00, note: "Amadurecimento excessivo no estoque" }
+    ],
+    admBalloons: DEFAULT_ADM_BALLOONS,
+    calendarEvents: [
+      { day: 5, type: "delivery", label: "Entrega Rota Norte" },
+      { day: 12, type: "delivery", label: "Entrega Rota Leste" },
+      { day: 15, type: "holiday", label: "Feriado Municipal" },
+      { day: 20, type: "holiday", label: "Consciência Negra" },
+      { day: 26, type: "delivery", label: "Entrega Programada" }
+    ]
+  };
+}
+
+let state = loadState();
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+      const init = createInitialState();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(init));
+      return init;
+    }
+    const parsed = JSON.parse(raw);
+    return Object.assign(createInitialState(), parsed);
+  } catch (e) {
+    return createInitialState();
+  }
+}
+
+function saveState(msg = "Sincronizado • Local") {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    const el = document.getElementById("sync-indicator");
+    if (el) el.textContent = msg;
+  } catch (e) {
+    const el = document.getElementById("sync-indicator");
+    if (el) el.textContent = "Aviso de armazenamento";
+  }
+}
+
+function formatBRL(val) {
+  const n = Number(val || 0);
+  return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
+
+function escapeHtml(str) {
+  return String(str || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function openModal(title, html) {
+  document.getElementById("modal-title").textContent = title;
+  document.getElementById("modal-body").innerHTML = html;
+  document.getElementById("modal-backdrop").classList.add("open");
+}
+
+function closeModal() {
+  document.getElementById("modal-backdrop").classList.remove("open");
+}
+
+function triggerPrintHtml(innerHtml, is80mm = false) {
+  const zone = document.getElementById("printable-zone");
+  zone.innerHTML = is80mm
+    ? `<div class="print-80mm">${innerHtml}</div>`
+    : `<div class="print-area">${innerHtml}</div>`;
+  zone.style.display = "block";
+  window.print();
+  setTimeout(() => {
+    zone.style.display = "none";
+    zone.innerHTML = "";
+  }, 500);
+}
+
+function setTab(tab) {
+  state.activeTab = tab;
+  saveState();
+  render();
+}
+
+function logoutSession() {
+  state.session.role = null;
+  state.session.userName = "";
+  state.session.userId = null;
+  state.activeTab = "login";
+  saveState();
+  render();
+}
+
+function renderTopChrome() {
+  document.getElementById("top-company-name").textContent = state.company.name || "Freisam App";
+  const initials = (state.company.name || "FS")
+    .split(/\s+/)
+    .slice(0, 2)
+    .map(w => w[0] || "")
+    .join("")
+    .toUpperCase() || "FS";
+  document.getElementById("top-logo").textContent = initials;
+
+  const banner = document.getElementById("greeting-banner");
+  if (state.session.role) {
+    banner.style.display = "flex";
+    const roleLabel =
+      state.session.role === "adm_master" ? "ADM Master" :
+      state.session.role === "adm_2" ? "2º Admin" :
+      state.session.role === "clb" ? "Colaborador (CLB)" : "Cliente";
+    document.getElementById("greeting-text").textContent =
+      `Bem-vindo, ${state.session.userName} • Perfil: ${roleLabel}`;
+  } else {
+    banner.style.display = "none";
+  }
+
+  const nav = document.getElementById("main-nav");
+  const buttons = [
+    { id: "login", label: "Acesso / PIN" },
+    { id: "client", label: "Painel Cliente" },
+    { id: "adm", label: "Painel ADM" }
+  ];
+  nav.innerHTML = buttons.map(b =>
+    `<button class="nav-btn ${state.activeTab === b.id ? "active" : ""}" onclick="setTab('${b.id}')">${b.label}</button>`
+  ).join("");
+}
+
+function render() {
+  renderTopChrome();
+  const container = document.getElementById("view-container");
+  if (state.activeTab === "client") {
+    container.innerHTML = renderClientView();
+  } else if (state.activeTab === "adm") {
+    container.innerHTML = renderAdmView();
+  } else {
+    container.innerHTML = renderLoginView();
+  }
+  window.scrollTo({ top: 0, behavior: "instant" });
+}
+
+/* ---------------- TELA DE ACESSO / PIN ---------------- */
+function renderLoginView() {
+  return `
+    <div class="card">
+      <div class="card-title">Entrada rápida por PIN</div>
+      <p class="muted">Digite o PIN de ADM Master (1111), 2º Admin (2222) ou Colaborador (3333) para reconhecimento automático e saudação personalizada.</p>
+      <div class="field-group">
+        <label for="pin-input">PIN de acesso</label>
+        <input id="pin-input" type="password" inputmode="numeric" maxlength="8" placeholder="Ex.: 1111" onkeydown="if(event.key==='Enter') loginByPin()">
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary btn-block" onclick="loginByPin()">Entrar com PIN</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Acesso do Cliente ou Solicitação</div>
+      <p class="muted">Entre como cliente cadastrado ou envie pedido de acesso (aprovado diretamente na Caixa de Avisos do ADM).</p>
+      <div class="field-group">
+        <label for="client-select">Cliente cadastrado</label>
+        <select id="client-select">
+          ${state.clients.filter(c => c.approved).map(c =>
+            `<option value="${c.id}">${escapeHtml(c.name)} — ${escapeHtml(c.city)} (Desde ${escapeHtml(c.since)})</option>`
+          ).join("")}
+        </select>
+      </div>
+      <button class="btn btn-secondary btn-block" onclick="loginAsClient()">Abrir Painel do Cliente</button>
+
+      <hr style="border:none;border-top:1px solid var(--border);margin:14px 0;">
+      <div class="card-title">Solicitar novo acesso de cliente</div>
+      <div class="field-group">
+        <label for="req-client-name">Nome / Estabelecimento</label>
+        <input id="req-client-name" type="text" placeholder="Ex.: Mercado São Jorge">
+      </div>
+      <div class="field-group">
+        <label for="req-client-city">Cidade</label>
+        <input id="req-client-city" type="text" placeholder="Ex.: Campinas">
+      </div>
+      <div class="field-group">
+        <label for="req-client-phone">WhatsApp</label>
+        <input id="req-client-phone" type="text" placeholder="Ex.: 5511999998888">
+      </div>
+      <button class="btn btn-warn btn-block" onclick="requestClientAccess()">Enviar solicitação para Caixa de Avisos</button>
+    </div>
+  `;
+}
+
+function loginByPin() {
+  const pin = (document.getElementById("pin-input").value || "").trim();
+  const user = state.users.find(u => u.active && u.pin === pin);
+  if (!user) {
+    openModal("PIN não encontrado", `<p>Nenhum usuário ativo encontrado com o PIN informado.</p><p class="muted">Dica de teste: ADM Master = 1111, 2º Admin = 2222, Colaborador = 3333.</p>`);
+    return;
+  }
+  state.session.role = user.role;
+  state.session.userName = user.name;
+  state.session.userId = user.id;
+
+  // Verifica aniversariantes no dia
+  const today = new Date();
+  const dd = String(today.getDate()).padStart(2, "0");
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const todayDm = `${dd}/${mm}`;
+  const bdays = state.users.filter(u => u.birthday === todayDm);
+
+  state.activeTab = user.role === "clb" ? "adm" : "adm";
+  saveState();
+  render();
+
+  if (bdays.length > 0) {
+    openModal("Aniversário do dia", `<p>Hoje é aniversário de: <strong>${bdays.map(b => escapeHtml(b.name)).join(", ")}</strong>!</p>`);
+  }
+}
+
+function loginAsClient() {
+  const id = document.getElementById("client-select").value;
+  const cli = state.clients.find(c => c.id === id);
+  if (!cli) return;
+  state.session.role = "client";
+  state.session.userName = cli.name;
+  state.session.userId = cli.id;
+  state.session.clientSince = cli.since;
+  state.activeTab = "client";
+  saveState();
+  render();
+}
+
+function requestClientAccess() {
+  const name = (document.getElementById("req-client-name").value || "").trim();
+  const city = (document.getElementById("req-client-city").value || "").trim();
+  const phone = (document.getElementById("req-client-phone").value || "").trim();
+  if (!name) {
+    openModal("Atenção", "<p>Informe o nome do cliente ou estabelecimento.</p>");
+    return;
+  }
+  state.notices.unshift({
+    id: "n_" + Date.now(),
+    title: "Solicitação de acesso de cliente",
+    text: `${name} (${city || "Cidade não informada"}) solicitou acesso. WhatsApp: ${phone || "não informado"}.`,
+    priority: "urgent",
+    requiresAccessApproval: true,
+    pendingClientName: name,
+    pendingCity: city || "Não informada",
+    pendingPhone: phone || ""
+  });
+  saveState("Novo aviso de acesso enviado");
+  openModal("Solicitação enviada", "<p>Seu pedido foi enviado para a <strong>Caixa de Avisos</strong> do ADM para liberação direta.</p>");
+}
+
+/* ---------------- PAINEL DO CLIENTE ---------------- */
+function renderClientView() {
+  const activeClient = state.clients.find(c => c.id === state.session.userId) || state.clients[0];
+  const sinceDate = activeClient ? activeClient.since : state.session.clientSince;
+  const clientName = state.session.role === "client" ? state.session.userName : (activeClient ? activeClient.name : "Cliente");
+
+  const sortedProducts = [...state.products].sort((a, b) => a.name.localeCompare(b.name, "pt-BR"));
+  const days = Array.from({ length: 30 }, (_, i) => i + 1);
+
+  return `
+    <div class="card">
+      <div class="card-title">${escapeHtml(clientName)}</div>
+      <div class="muted">Cliente desde ${escapeHtml(sinceDate)} • Pedidos até as 15h</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Calendário de Entregas &amp; Feriados</div>
+      <div class="muted">Verde = entrega programada • Vermelho = feriado</div>
+      <div class="cal-grid">
+        ${days.map(d => {
+          const ev = state.calendarEvents.find(e => e.day === d);
+          const cls = ev ? (ev.type === "holiday" ? "cal-day holiday" : "cal-day delivery") : "cal-day";
+          return `<div class="${cls}" title="${ev ? escapeHtml(ev.label) : ""}">${d}</div>`;
+        }).join("")}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Calculadora Rápida</div>
+      <div class="field-group">
+        <label for="calc-expr">Expressão (ex.: 12*25 + 40)</label>
+        <input id="calc-expr" type="text" placeholder="Digite valores e operadores" onkeydown="if(event.key==='Enter') runCalc()">
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="runCalc()">Calcular</button>
+      <span id="calc-result" style="margin-left:10px;font-weight:800;"></span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Central de Serviços (Grade 3 + 3)</div>
+      <div class="client-grid-6">
+        <div class="square-tile" onclick="openClientNoticesModal()">
+          <span>Avisos</span>
+          <span class="badge badge-warn">${state.notices.length}</span>
+        </div>
+        <div class="square-tile" onclick="openClientScheduledModal()">
+          <span>Entrega Agendada</span>
+          <span class="badge badge-ok">${state.scheduledDeliveries.length}</span>
+        </div>
+        <div class="square-tile" onclick="openModal('Alarmes &amp; Horário de Corte', '<p>Limite diário para pedidos: <strong>15h00</strong>.</p><p class=muted>Pedidos após 15h seguem para a próxima programação.</p>')">
+          <span>Alarmes (15h)</span>
+          <span class="badge badge-ok">Ativo</span>
+        </div>
+        <div class="square-tile" onclick="openClientReclameModal()">
+          <span>Sugestões / Reclames</span>
+          <span class="badge badge-warn">WhatsApp</span>
+        </div>
+        <div class="square-tile" onclick="openClientHistoryModal()">
+          <span>Histórico de Pedidos</span>
+          <span class="badge badge-ok">${state.orders.length}</span>
+        </div>
+        <div class="square-tile" onclick="openClientContactsModal()">
+          <span>Contatos</span>
+          <span class="badge badge-ok">${state.contacts.length}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Catálogo por Ordem Alfabética</div>
+      <div class="field-group">
+        <label for="cat-search">Buscar produto ou categoria</label>
+        <input id="cat-search" type="text" placeholder="Digite para filtrar..." oninput="filterClientCatalog()">
+      </div>
+      <div id="client-catalog-list">
+        ${sortedProducts.map(p => {
+          const unitPrice = p.cost * (1 + (p.margin || 0) / 100);
+          return `
+            <div class="list-row client-prod-item" data-search="${escapeHtml((p.name + " " + p.category).toLowerCase())}">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+                <strong>${escapeHtml(p.name)}</strong>
+                <span class="badge badge-ok">${formatBRL(unitPrice)} / ${escapeHtml(p.unit)}</span>
+              </div>
+              <div class="muted">${escapeHtml(p.category)}</div>
+              <div class="qty-box">
+                <button class="btn btn-secondary btn-sm" onclick="stepClientQty('${p.id}', -1)">−</button>
+                <input id="cqty_${p.id}" type="number" min="0" value="0" aria-label="Quantidade de ${escapeHtml(p.name)}">
+                <button class="btn btn-secondary btn-sm" onclick="stepClientQty('${p.id}', 1)">+</button>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+
+      <div class="field-group" style="margin-top:10px;">
+        <label for="order-priority">Prioridade do pedido</label>
+        <select id="order-priority">
+          <option value="normal">Normal (Amarelo)</option>
+          <option value="urgent">Urgente (Vermelho)</option>
+        </select>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="sendClientOrderWhatsApp()">Concluir e Enviar Pedido via WhatsApp</button>
+    </div>
+
+    <div class="insta-banner" onclick="window.open('${escapeHtml(state.company.instagramUrl || "https://instagram.com")}', '_blank')">
+      <div>
+        <div style="font-size:15px;">Siga no Instagram • Base 10%</div>
+        <div style="font-size:12px;font-weight:600;opacity:0.95;">Novidades, ofertas e bastidores</div>
+      </div>
+      <span>Abrir &rarr;</span>
+    </div>
+  `;
+}
+
+function runCalc() {
+  const expr = (document.getElementById("calc-expr").value || "").trim();
+  const out = document.getElementById("calc-result");
+  if (!/^[0-9+\-*/().\s]+$/.test(expr)) {
+    out.textContent = "Expressão inválida";
+    return;
+  }
+  try {
+    const val = Function(`"use strict"; return (${expr});`)();
+    out.textContent = Number.isFinite(val) ? `= ${val}` : "Erro";
+  } catch (e) {
+    out.textContent = "Erro";
+  }
+}
+
+function filterClientCatalog() {
+  const q = (document.getElementById("cat-search").value || "").toLowerCase().trim();
+  document.querySelectorAll(".client-prod-item").forEach(el => {
+    const hay = el.getAttribute("data-search") || "";
+    el.style.display = hay.includes(q) ? "block" : "none";
+  });
+}
+
+function stepClientQty(prodId, delta) {
+  const inp = document.getElementById("cqty_" + prodId);
+  if (!inp) return;
+  const next = Math.max(0, (parseInt(inp.value, 10) || 0) + delta);
+  inp.value = next;
+}
+
+function sendClientOrderWhatsApp() {
+  const selected = [];
+  let total = 0;
+  state.products.forEach(p => {
+    const inp = document.getElementById("cqty_" + p.id);
+    const qty = inp ? (parseFloat(inp.value) || 0) : 0;
+    if (qty > 0) {
+      const unitPrice = p.cost * (1 + (p.margin || 0) / 100);
+      const sub = qty * unitPrice;
+      total += sub;
+      selected.push(`${qty} ${p.unit} de ${p.name} (${formatBRL(sub)})`);
+    }
+  });
+  if (selected.length === 0) {
+    openModal("Pedido vazio", "<p>Selecione pelo menos 1 item antes de enviar.</p>");
+    return;
+  }
+  const prio = document.getElementById("order-priority").value;
+  const prioText = prio === "urgent" ? "URGENTE (Vermelho)" : "NORMAL (Amarelo)";
+  const clientLabel = state.session.role === "client" ? state.session.userName : "Cliente";
+
+  const newOrder = {
+    id: "ord_" + Date.now(),
+    date: new Date().toLocaleDateString("pt-BR"),
+    clientName: clientLabel,
+    priority: prio,
+    total: Number(total.toFixed(2)),
+    paid: false,
+    pixCode: state.company.pixKeyDefault || "00000000000",
+    items: selected
+  };
+  state.orders.unshift(newOrder);
+  saveState("Pedido registrado");
+
+  const msg = encodeURIComponent(
+    `*Pedido - ${state.company.name}*
+Cliente: ${clientLabel}
+Prioridade: ${prioText}
+Itens:
+- ${selected.join("
+- ")}
+*Total estimado: ${formatBRL(total)}*`
+  );
+  const phone = state.company.phoneWhats || "5500000000000";
+  window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
+}
+
+/* Modais do Cliente */
+function openClientNoticesModal() {
+  if (state.notices.length === 0) {
+    openModal("Avisos", "<p class='muted'>Nenhum aviso pendente no momento.</p>");
+    return;
+  }
+  const html = state.notices.map(n => `
+    <div class="notice-item ${n.priority === "urgent" ? "urgent" : ""}">
+      <strong>${escapeHtml(n.title)}</strong>
+      <p style="margin:4px 0 8px 0;">${escapeHtml(n.text)}</p>
+      <button class="btn btn-primary btn-sm" onclick="ackNotice('${n.id}')">Estou ciente</button>
+    </div>
+  `).join("");
+  openModal("Caixa de Avisos", html);
+}
+
+function ackNotice(noticeId) {
+  const idx = state.notices.findIndex(n => n.id === noticeId);
+  if (idx === -1) return;
+  const notice = state.notices[idx];
+
+  // Se for solicitacao de acesso de cliente e estiver no ADM, abre Sim / Nao direto
+  if (notice.requiresAccessApproval && (state.session.role === "adm_master" || state.session.role === "adm_2")) {
+    closeModal();
+    openModal(
+      "Liberar acesso do cliente?",
+      `
+        <p>Você marcou <strong>Estou ciente</strong> no pedido de acesso:</p>
+        <p><strong>${escapeHtml(notice.pendingClientName)}</strong> — ${escapeHtml(notice.pendingCity)}</p>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="decideClientAccess('${notice.id}', true)">Sim — Liberar acesso</button>
+          <button class="btn btn-danger" onclick="decideClientAccess('${notice.id}', false)">Não — Recusar</button>
+        </div>
+      `
+    );
+    return;
+  }
+
+  state.notices.splice(idx, 1);
+  saveState("Aviso confirmado");
+  openClientNoticesModal();
+  if (state.activeTab === "adm") render();
+}
+
+function decideClientAccess(noticeId, approved) {
+  const idx = state.notices.findIndex(n => n.id === noticeId);
+  if (idx === -1) return;
+  const n = state.notices[idx];
+  if (approved) {
+    state.clients.push({
+      id: "c_" + Date.now(),
+      name: n.pendingClientName || "Novo Cliente",
+      city: n.pendingCity || "Não informada",
+      routeId: state.routes[0] ? state.routes[0].id : "r_1",
+      since: new Date().toLocaleDateString("pt-BR"),
+      approved: true,
+      phone: n.pendingPhone || ""
+    });
+  }
+  state.notices.splice(idx, 1);
+  saveState(approved ? "Acesso liberado" : "Acesso recusado");
+  closeModal();
+  render();
+}
+
+function openClientScheduledModal() {
+  const html = state.scheduledDeliveries.length
+    ? state.scheduledDeliveries.map(s => `<div class="list-row"><strong>${escapeHtml(s.date)}</strong> — ${escapeHtml(s.clientName)}<div class="muted">${escapeHtml(s.summary)}</div></div>`).join("")
+    : "<p class='muted'>Nenhuma entrega agendada.</p>";
+  openModal("Entregas Agendadas", html);
+}
+
+function openClientReclameModal() {
+  openModal("Sugestões ou Reclames", `
+    <div class="field-group">
+      <label for="rec-prio">Classificação</label>
+      <select id="rec-prio">
+        <option value="normal">Normal (Amarelo)</option>
+        <option value="urgent">Urgente (Vermelho)</option>
+      </select>
+    </div>
+    <div class="field-group">
+      <label for="rec-msg">Mensagem</label>
+      <textarea id="rec-msg" rows="3" placeholder="Escreva sua sugestão ou reclamação..."></textarea>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="submitClientReclame()">Salvar e Enviar via WhatsApp</button>
+  `);
+  setTimeout(() => {
+    const ta = document.getElementById("rec-msg");
+    if (ta) ta.focus();
+  }, 50);
+}
+
+function submitClientReclame() {
+  const prio = document.getElementById("rec-prio").value;
+  const msg = (document.getElementById("rec-msg").value || "").trim();
+  if (!msg) return;
+  const author = state.session.role === "client" ? state.session.userName : "Cliente";
+  state.reclames.unshift({
+    id: "rec_" + Date.now(),
+    date: new Date().toLocaleDateString("pt-BR"),
+    author,
+    priority: prio,
+    message: msg
+  });
+  saveState("Reclame registrado");
+  const phone = state.company.phoneWhats || "5500000000000";
+  const text = encodeURIComponent(`*${prio === "urgent" ? "RECLAME URGENTE" : "Sugestão/Reclame"}*
+De: ${author}
+Mensagem: ${msg}`);
+  closeModal();
+  window.open(`https://wa.me/${phone}?text=${text}`, "_blank");
+}
+
+function openClientHistoryModal() {
+  const html = `
+    <div class="field-group">
+      <label for="hist-filter">Filtrar por período, produto ou número</label>
+      <input id="hist-filter" type="text" placeholder="Ex.: Tomate, 12/11 ou ord_101" oninput="filterHistoryList()">
+    </div>
+    <div id="hist-items">
+      ${state.orders.map(o => `
+        <div class="list-row hist-row" data-q="${escapeHtml((o.id + " " + o.date + " " + o.clientName + " " + (o.items || []).map(i => typeof i === "string" ? i : i.name).join(" ")).toLowerCase())}">
+          <strong>Pedido #${escapeHtml(o.id)}</strong> • ${escapeHtml(o.date)} • <strong>${formatBRL(o.total)}</strong>
+          <div class="muted">${escapeHtml((o.items || []).map(i => typeof i === "string" ? i : `${i.qty}x ${i.name}`).join(", "))}</div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+  openModal("Histórico de Pedidos", html);
+  setTimeout(() => {
+    const f = document.getElementById("hist-filter");
+    if (f) f.focus();
+  }, 50);
+}
+
+function filterHistoryList() {
+  const q = (document.getElementById("hist-filter").value || "").toLowerCase().trim();
+  document.querySelectorAll(".hist-row").forEach(el => {
+    el.style.display = (el.getAttribute("data-q") || "").includes(q) ? "block" : "none";
+  });
+}
+
+function openClientContactsModal() {
+  const html = state.contacts.map(ct => `
+    <div class="list-row" style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+      <div>
+        <strong>${escapeHtml(ct.name)}</strong>
+        <div class="muted">${escapeHtml(ct.role)}</div>
+      </div>
+      <a class="btn btn-primary btn-sm" href="https://wa.me/${escapeHtml(ct.phone)}" target="_blank">WhatsApp</a>
+    </div>
+  `).join("");
+  openModal("Contatos da Empresa", html);
+}
+
+/* ---------------- PAINEL ADM & BALOES ---------------- */
+function renderAdmView() {
+  const role = state.session.role;
+  const isClb = role === "clb";
+  const currentUser = state.users.find(u => u.id === state.session.userId);
+
+  const visibleBalloons = state.admBalloons.filter(b => {
+    if (!role || role === "adm_master" || role === "adm_2") return true;
+    if (isClb) {
+      if (b.isSecurity) return false;
+      if (currentUser && Array.isArray(currentUser.balloons)) {
+        return currentUser.balloons.includes(b.id);
+      }
+      return !!b.clbAllowed;
+    }
+    return !b.isSecurity;
+  });
+
+  const urgentNoticesCount = state.notices.filter(n => n.requiresAccessApproval || n.priority === "urgent").length;
+
+  return `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+        <div>
+          <div class="card-title">Painel Administrativo (Grade 4 Colunas)</div>
+          <div class="muted">Toque para abrir • Caixa de avisos: ${state.notices.length} aviso(s) ${urgentNoticesCount ? `(${urgentNoticesCount} urgente/acesso)` : ""}</div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-warn btn-sm" onclick="openClientNoticesModal()">Caixa de Avisos (${state.notices.length})</button>
+          ${!isClb ? `<button class="btn btn-secondary btn-sm" onclick="openAddBalloonModal()">+ Novo Balão</button>` : ""}
+        </div>
+      </div>
+
+      <div class="adm-grid" style="margin-top:12px;">
+        ${visibleBalloons.map(b => `
+          <div class="balloon-tile ${b.isSecurity ? "security-tile" : ""}" onclick="openAdmBalloon('${b.id}')">
+            <div class="balloon-title">${escapeHtml(b.title)}</div>
+            <div class="balloon-tag">${escapeHtml(b.tag || "")}</div>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function openAddBalloonModal() {
+  openModal("Novo Balão na Grade ADM", `
+    <div class="field-group">
+      <label for="nb-title">Título do balão</label>
+      <input id="nb-title" type="text" placeholder="Ex.: Conferência de Caixa">
+    </div>
+    <div class="field-group">
+      <label for="nb-tag">Subtítulo / tag curta</label>
+      <input id="nb-tag" type="text" placeholder="Ex.: Diário">
+    </div>
+    <button class="btn btn-primary btn-block" onclick="saveNewBalloon()">Adicionar à Grade</button>
+  `);
+}
+
+function saveNewBalloon() {
+  const title = (document.getElementById("nb-title").value || "").trim();
+  const tag = (document.getElementById("nb-tag").value || "Personalizado").trim();
+  if (!title) return;
+  state.admBalloons.push({
+    id: "b_custom_" + Date.now(),
+    title,
+    tag,
+    clbAllowed: false,
+    isCustom: true
+  });
+  saveState("Balão adicionado");
+  closeModal();
+  render();
+}
+
+function openAdmBalloon(balloonId) {
+  const b = state.admBalloons.find(x => x.id === balloonId);
+  if (!b) return;
+
+  switch (b.id) {
+    case "b_rotas":
+      return openRotasPrepModal();
+    case "b_veiculos":
+      return openVeiculosModal();
+    case "b_retornos":
+      return openRetornosRotaModal();
+    case "b_produtos":
+      return openProdutosModal();
+    case "b_compras":
+      return openComprasModal();
+    case "b_vendas":
+      return openVendasModal();
+    case "b_despesas":
+      return openDespesasModal();
+    case "b_receber":
+      return openReceberModal();
+    case "b_fornecedor":
+      return openFornecedorModal();
+    case "b_notaspagas":
+      return openNotasPagasModal();
+    case "b_programadas":
+      return openProgramadasModal();
+    case "b_reclames":
+      return openReclamesAdmModal();
+    case "b_estoque":
+      return openEstoqueModal();
+    case "b_colaboradores":
+      return openColaboradoresModal();
+    case "b_mei":
+      return openMeiModal();
+    case "b_relatorio":
+      return openRelatorioA4Modal();
+    case "b_seguranca":
+      return openSecurityGateModal();
+    default:
+      openModal(b.title, `<p>Balão personalizado <strong>${escapeHtml(b.title)}</strong> (${escapeHtml(b.tag || "")}) pronto para uso operacional.</p>`);
+  }
+}
+
+/* 1. Rotas & Prep Carga */
+function openRotasPrepModal() {
+  const route = state.routes[0];
+  const queueHtml = (route.queue || []).map((q, idx) => `
+    <div class="list-row" style="border-left:4px solid ${q.done ? "var(--ok)" : (idx === 0 ? "var(--accent)" : "#c5d1ca")};">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+        <strong>#${idx + 1} ${escapeHtml(q.clientName)} (${escapeHtml(q.city)})</strong>
+        <span class="badge ${q.done ? "badge-ok" : "badge-warn"}">${q.done ? "Separado ✓" : "Na fila"}</span>
+      </div>
+      <div>Item: <strong>${escapeHtml(q.productName)}</strong> — Qtd: <strong>${q.qty}</strong> ${q.resistant ? '<span class="badge badge-ok">Resistente</span>' : ""}</div>
+      <div class="btn-row">
+        <button class="btn btn-primary btn-sm" onclick="toggleQueueDone('${q.id}')">${q.done ? "Desmarcar" : "✓ Marcar Separado"}</button>
+      </div>
+    </div>
+  `).join("");
+
+  openModal("Rotas & Prep Carga", `
+    <p><strong>Rota ativa:</strong> ${escapeHtml(route.name)} • Destino final: <strong>${escapeHtml(route.lastCity)}</strong> • Status: <span class="badge badge-warn">${escapeHtml(route.status)}</span></p>
+    <div class="btn-row">
+      <button class="btn btn-primary btn-sm" onclick="startRouteDelivery()">Iniciar Rota / Navegar</button>
+      <button class="btn btn-secondary btn-sm" onclick="finishLoadTo80mm()">Concluir Carga (Fila PC 80mm)</button>
+    </div>
+    <hr style="border:none;border-top:1px solid var(--border);margin:12px 0;">
+    <div class="card-title">Fila de Separação em Cascata</div>
+    ${queueHtml}
+  `);
+}
+
+function toggleQueueDone(qId) {
+  const route = state.routes[0];
+  const item = route.queue.find(x => x.id === qId);
+  if (!item) return;
+  item.done = !item.done;
+  saveState("Separação atualizada");
+  openRotasPrepModal();
+}
+
+function startRouteDelivery() {
+  const route = state.routes[0];
+  const kmInput = prompt(`Informe a KM do painel para iniciar a rota (${route.vehiclePlate}):`, state.vehicles[0] ? state.vehicles[0].km : "0");
+  if (kmInput === null) return;
+  const kmNum = parseInt(kmInput, 10);
+  if (Number.isFinite(kmNum) && kmNum > 0 && state.vehicles[0]) {
+    state.vehicles[0].km = kmNum;
+  }
+  route.status = "Em rota";
+  saveState("Rota iniciada");
+  closeModal();
+  window.open(`https://waze.com/ul?q=${encodeURIComponent(route.lastCity)}&navigate=yes`, "_blank");
+}
+
+function finishLoadTo80mm() {
+  const route = state.routes[0];
+  const lines = route.queue.map(q => `${q.done ? "[X]" : "[ ]"} ${q.qty}x ${q.productName} (${q.clientName})`).join("<br>");
+  triggerPrintHtml(`
+    <div style="text-align:center;"><strong>${escapeHtml(state.company.name)}</strong><br>ROMANEIO DE CARGA (80mm)</div>
+    <hr>
+    <div>Rota: ${escapeHtml(route.name)}<br>Destino: ${escapeHtml(route.lastCity)}</div>
+    <hr>
+    <div>${lines}</div>
+  `, true);
+}
+
+/* 2. Veículos & Frota */
+function openVeiculosModal() {
+  const html = state.vehicles.map(v => {
+    const oilAlert = v.km >= (v.oilDueKm - 1000);
+    return `
+      <div class="list-row">
+        <strong>${escapeHtml(v.model)} (${escapeHtml(v.year)}) — Placa ${escapeHtml(v.plate)}</strong>
+        <div>KM painel: <strong>${v.km} km</strong> • IPVA: ${escapeHtml(v.ipvaDue)} • Aniversário: ${escapeHtml(v.birthday)}</div>
+        <div class="muted">${escapeHtml(v.maintenanceAlert)} • Troca de óleo alvo: ${v.oilDueKm} km</div>
+        <div style="margin-top:6px;">
+          <span class="badge ${oilAlert ? "badge-danger" : "badge-ok"}">${oilAlert ? "Alerta troca de óleo / revisão" : "Manutenção em dia"}</span>
+        </div>
+      </div>
+    `;
+  }).join("");
+  openModal("Veículos & Frota", html + `<button class="btn btn-primary btn-block" onclick="promptAddVehicle()">+ Cadastrar Veículo</button>`);
+}
+
+function promptAddVehicle() {
+  const model = prompt("Modelo do veículo:");
+  if (!model) return;
+  const plate = prompt("Placa:") || "SEM-0000";
+  const km = parseInt(prompt("KM atual do painel:", "0") || "0", 10) || 0;
+  state.vehicles.push({
+    id: "v_" + Date.now(),
+    model,
+    year: "2025",
+    plate,
+    ipvaDue: "2026-06-30",
+    km,
+    birthday: "01/01",
+    oilDueKm: km + 10000,
+    maintenanceAlert: "Cadastro inicial"
+  });
+  saveState("Veículo salvo");
+  openVeiculosModal();
+}
+
+/* 3. Retornos & Rota */
+function openRetornosRotaModal() {
+  const route = state.routes[0];
+  const html = `
+    <div class="card-title">Acompanhar Rota (Linha Horizontal)</div>
+    <div class="list-row">
+      <strong>Base</strong> &rarr; <span class="badge badge-ok">Verde (No prazo)</span> &rarr; <span class="badge badge-warn">Cinza/Atenção</span> &rarr; <span class="badge badge-danger">Vermelho (Atraso)</span>
+      <div class="muted" style="margin-top:4px;">Rota atual: ${escapeHtml(route.name)} (${escapeHtml(route.status)})</div>
+    </div>
+    <div class="card-title">Retornos Registrados (Toque para abrir Waze)</div>
+    ${state.returns.map(r => `
+      <div class="list-row" style="cursor:pointer;" onclick="window.open('https://waze.com/ul?q=${encodeURIComponent(r.city)}&navigate=yes','_blank')">
+        <strong>${escapeHtml(r.clientName)} (${escapeHtml(r.city)})</strong> • <span class="badge badge-warn">${escapeHtml(r.status)}</span>
+        <div class="muted">${escapeHtml(r.reason)} — Toque para navegar no Waze</div>
+      </div>
+    `).join("")}
+  `;
+  openModal("Retornos & Acompanhar Rota", html);
+}
+
+/* 4. Produtos */
+function openProdutosModal() {
+  const html = state.products.map(p => {
+    const suggested = p.cost * (1 + (p.margin || 0) / 100);
+    return `
+      <div class="list-row">
+        <strong>[${escapeHtml(p.code)}] ${escapeHtml(p.name)}</strong> (${escapeHtml(p.unit)})
+        <div>Custo: <strong>${formatBRL(p.cost)}</strong> • Margem: <strong>${p.margin}%</strong> • Sugerido: <strong>${formatBRL(suggested)}</strong></div>
+        <div class="muted">Estoque: ${p.stock} • Categoria: ${escapeHtml(p.category)}</div>
+      </div>
+    `;
+  }).join("");
+  openModal("Produtos & Margem", html + `<button class="btn btn-primary btn-block" onclick="promptAddProduct()">+ Novo Produto</button>`);
+}
+
+function promptAddProduct() {
+  const name = prompt("Nome do produto:");
+  if (!name) return;
+  const cost = parseFloat(prompt("Preço de custo (ex.: 30.00):", "20") || "0") || 0;
+  const margin = parseFloat(prompt("Margem de lucro % (ex.: 35):", "30") || "30") || 30;
+  const stock = parseFloat(prompt("Estoque inicial:", "10") || "10") || 10;
+  const code = String(1000 + state.products.length + 1);
+  state.products.push({
+    id: "p_" + Date.now(),
+    code,
+    name,
+    unit: "cx",
+    category: "Hortifruti",
+    cost,
+    margin,
+    qtyPerUnit: 1,
+    stock,
+    minStock: 5,
+    lastSaleAt: Date.now()
+  });
+  saveState("Produto cadastrado");
+  openProdutosModal();
+}
+
+/* 5. Compras */
+function openComprasModal() {
+  const html = `
+    <div class="field-group">
+      <label for="pur-sup">Fornecedor</label>
+      <select id="pur-sup">
+        ${state.suppliers.map(s => `<option value="${escapeHtml(s.name)}">${escapeHtml(s.name)}</option>`).join("")}
+      </select>
+    </div>
+    <div class="field-group">
+      <label for="pur-prod">Produto</label>
+      <select id="pur-prod">
+        ${state.products.map(p => `<option value="${p.id}">[${escapeHtml(p.code)}] ${escapeHtml(p.name)} (Custo ${formatBRL(p.cost)})</option>`).join("")}
+      </select>
+    </div>
+    <div class="field-group">
+      <label for="pur-qty">Quantidade</label>
+      <input id="pur-qty" type="number" min="1" value="5">
+    </div>
+    <div class="field-group">
+      <label for="pur-status">Pagamento</label>
+      <select id="pur-status">
+        <option value="Paga">Paga (À vista)</option>
+        <option value="Agendada">Agendada (Data futura)</option>
+      </select>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="savePurchase()">Registrar Compra e Atualizar Estoque</button>
+    <hr style="border:none;border-top:1px solid var(--border);margin:12px 0;">
+    <div class="card-title">Compras Recentes</div>
+    ${state.purchases.map(pu => `
+      <div class="list-row">
+        <strong>${escapeHtml(pu.supplierName)}</strong> — ${escapeHtml(pu.itemName)} (${pu.qty}x) • <strong>${formatBRL(pu.costTotal)}</strong>
+        <div><span class="badge ${pu.status === "Paga" ? "badge-ok" : "badge-warn"}">${escapeHtml(pu.status)}</span> • ${escapeHtml(pu.date)}</div>
+      </div>
+    `).join("")}
+  `;
+  openModal("Compras de Fornecedores", html);
+}
+
+function savePurchase() {
+  const supName = document.getElementById("pur-sup").value;
+  const prodId = document.getElementById("pur-prod").value;
+  const qty = parseFloat(document.getElementById("pur-qty").value) || 0;
+  const status = document.getElementById("pur-status").value;
+  const prod = state.products.find(p => p.id === prodId);
+  if (!prod || qty <= 0) return;
+
+  prod.stock = Number((prod.stock + qty).toFixed(2));
+  const total = Number((prod.cost * qty).toFixed(2));
+
+  if (status === "Paga") {
+    state.company.meiUsedAnnual = Number((Number(state.company.meiUsedAnnual || 0) + total).toFixed(2));
+  }
+
+  state.purchases.unshift({
+    id: "pur_" + Date.now(),
+    date: new Date().toLocaleDateString("pt-BR"),
+    supplierName: supName,
+    itemName: prod.name,
+    qty,
+    costTotal: total,
+    status,
+    dueDate: status === "Agendada" ? "Próximo vencimento" : ""
+  });
+  saveState("Compra registrada");
+  openComprasModal();
+}
+
+/* 6. Vendas */
+function openVendasModal() {
+  const html = `
+    <div class="field-group">
+      <label for="sale-client">Cliente</label>
+      <select id="sale-client">
+        ${state.clients.map(c => `<option value="${escapeHtml(c.name)}">${escapeHtml(c.name)}</option>`).join("")}
+      </select>
+    </div>
+    <div class="field-group">
+      <label for="sale-prod">Produto</label>
+      <select id="sale-prod">
+        ${state.products.map(p => {
+          const base = p.cost * (1 + (p.margin || 0) / 100);
+          const plus10 = base * 1.10;
+          return `<option value="${p.id}">${escapeHtml(p.name)} — Base ${formatBRL(base)} / +10% Prazo ${formatBRL(plus10)}</option>`;
+        }).join("")}
+      </select>
+    </div>
+    <div class="field-group">
+      <label for="sale-qty">Quantidade</label>
+      <input id="sale-qty" type="number" min="1" value="2">
+    </div>
+    <div class="field-group">
+      <label for="sale-mode">Condição</label>
+      <select id="sale-mode">
+        <option value="promo">Preço Promocional / Base</option>
+        <option value="prazo10">A Prazo (+10% acréscimo)</option>
+      </select>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="createSaleOrder()">Lançar Venda</button>
+    <hr style="border:none;border-top:1px solid var(--border);margin:12px 0;">
+    <div class="card-title">Vendas Registradas</div>
+    ${state.orders.map(o => `
+      <div class="list-row">
+        <strong>#${escapeHtml(o.id)}</strong> • ${escapeHtml(o.clientName)} • <strong>${formatBRL(o.total)}</strong>
+        <div><span class="badge ${o.paid ? "badge-ok" : "badge-warn"}">${o.paid ? "Recebida" : "A Receber"}</span> • ${escapeHtml(o.date)}</div>
+      </div>
+    `).join("")}
+  `;
+  openModal("Vendas & Precificação", html);
+}
+
+function createSaleOrder() {
+  const clientName = document.getElementById("sale-client").value;
+  const prodId = document.getElementById("sale-prod").value;
+  const qty = parseFloat(document.getElementById("sale-qty").value) || 0;
+  const mode = document.getElementById("sale-mode").value;
+  const prod = state.products.find(p => p.id === prodId);
+  if (!prod || qty <= 0) return;
+
+  const basePrice = prod.cost * (1 + (prod.margin || 0) / 100);
+  const unitPrice = mode === "prazo10" ? basePrice * 1.10 : basePrice;
+  const total = Number((unitPrice * qty).toFixed(2));
+
+  prod.stock = Math.max(0, Number((prod.stock - qty).toFixed(2)));
+  prod.lastSaleAt = Date.now();
+  state.company.meiUsedAnnual = Number((Number(state.company.meiUsedAnnual || 0) + total).toFixed(2));
+
+  state.orders.unshift({
+    id: "ord_" + Date.now(),
+    date: new Date().toLocaleDateString("pt-BR"),
+    clientName,
+    priority: "normal",
+    total,
+    paid: false,
+    pixCode: state.company.pixKeyDefault || "00000000000",
+    items: [{ name: prod.name, qty, price: unitPrice }]
+  });
+  saveState("Venda registrada");
+  openVendasModal();
+}
+
+/* 7. Despesas */
+function openDespesasModal() {
+  const sumExp = state.expenses.reduce((acc, e) => acc + Number(e.amount || 0), 0);
+  const html = `
+    <p>Total de despesas lançadas: <strong>${formatBRL(sumExp)}</strong></p>
+    <div class="field-group">
+      <label for="exp-type">Tipo</label>
+      <select id="exp-type">
+        <option value="Recorrente">Recorrente</option>
+        <option value="Atípica">Atípica</option>
+        <option value="Quebra de produto">Quebra de produto</option>
+      </select>
+    </div>
+    <div class="field-group">
+      <label for="exp-cat">Descrição / Produto</label>
+      <input id="exp-cat" type="text" placeholder="Ex.: Frete avulso ou Tomate avariado">
+    </div>
+    <div class="field-group">
+      <label for="exp-val">Valor (R$)</label>
+      <input id="exp-val" type="number" step="0.01" placeholder="0.00">
+    </div>
+    <button class="btn btn-primary btn-block" onclick="addExpenseItem()">Adicionar Despesa</button>
+    <hr style="border:none;border-top:1px solid var(--border);margin:12px 0;">
+    ${state.expenses.map(e => `
+      <div class="list-row">
+        <strong>${escapeHtml(e.type)}</strong> — ${escapeHtml(e.category)} • <strong>${formatBRL(e.amount)}</strong>
+        <div class="muted">${escapeHtml(e.date)} ${e.note ? "• " + escapeHtml(e.note) : ""}</div>
+      </div>
+    `).join("")}
+  `;
+  openModal("Despesas & Quebras", html);
+}
+
+function addExpenseItem() {
+  const type = document.getElementById("exp-type").value;
+  const category = (document.getElementById("exp-cat").value || "").trim();
+  const amount = parseFloat(document.getElementById("exp-val").value) || 0;
+  if (!category || amount <= 0) return;
+  state.expenses.unshift({
+    id: "exp_" + Date.now(),
+    date: new Date().toLocaleDateString("pt-BR"),
+    type,
+    category,
+    amount,
+    note: ""
+  });
+  saveState("Despesa adicionada");
+  openDespesasModal();
+}
+
+/* 8. Notas a Receber */
+function openReceberModal() {
+  const openOrders = state.orders.filter(o => !o.paid);
+  const html = openOrders.length
+    ? openOrders.map(o => `
+        <div class="list-row">
+          <strong>#${escapeHtml(o.id)}</strong> • ${escapeHtml(o.clientName)} • <strong>${formatBRL(o.total)}</strong>
+          <div class="muted">Pix / Cobrança: ${escapeHtml(o.pixCode || state.company.pixKeyDefault)}</div>
+          <div class="btn-row">
+            <button class="btn btn-primary btn-sm" onclick="settleOrder('${o.id}')">Quitar Nota</button>
+            <button class="btn btn-secondary btn-sm" onclick="partialOrder('${o.id}')">Abater Valor</button>
+            <button class="btn btn-warn btn-sm" onclick="sendPixReminderNotice('${o.id}')">Enviar Aviso com Pix</button>
+          </div>
+        </div>
+      `).join("")
+    : "<p class='muted'>Nenhuma nota em aberto no momento.</p>";
+  openModal("Notas a Receber", html);
+}
+
+function settleOrder(orderId) {
+  const o = state.orders.find(x => x.id === orderId);
+  if (!o) return;
+  o.paid = true;
+  saveState("Nota quitada");
+  openReceberModal();
+}
+
+function partialOrder(orderId) {
+  const o = state.orders.find(x => x.id === orderId);
+  if (!o) return;
+  const val = parseFloat(prompt(`Valor a abater (Saldo atual: ${formatBRL(o.total)}):`, "10") || "0") || 0;
+  if (val <= 0) return;
+  o.total = Math.max(0, Number((o.total - val).toFixed(2)));
+  if (o.total === 0) o.paid = true;
+  saveState("Valor abatido");
+  openReceberModal();
+}
+
+function sendPixReminderNotice(orderId) {
+  const o = state.orders.find(x => x.id === orderId);
+  if (!o) return;
+  state.notices.unshift({
+    id: "n_" + Date.now(),
+    title: `Lembrete de pagamento — ${o.clientName}`,
+    text: `Saldo em aberto: ${formatBRL(o.total)}. Pix: ${o.pixCode || state.company.pixKeyDefault}`,
+    priority: "normal",
+    requiresAccessApproval: false
+  });
+  saveState("Aviso Pix enviado");
+  openModal("Aviso enviado", "<p>Lembrete com código Pix adicionado à Caixa de Avisos.</p>");
+}
+
+/* 9. Fornecedor */
+function openFornecedorModal() {
+  const html = `
+    <div class="field-group">
+      <label for="sup-name">Nome do fornecedor</label>
+      <input id="sup-name" type="text" placeholder="Ex.: Sítio Primavera">
+    </div>
+    <div class="field-group">
+      <label for="sup-items">O que ele vende (separado por vírgula)</label>
+      <input id="sup-items" type="text" placeholder="Ex.: Quiabo, Pimentão Verde, Coentro">
+    </div>
+    <button class="btn btn-primary btn-block" onclick="addSupplier()">Cadastrar Fornecedor</button>
+    <hr style="border:none;border-top:1px solid var(--border);margin:12px 0;">
+    ${state.suppliers.map(s => `
+      <div class="list-row">
+        <strong>${escapeHtml(s.name)}</strong>
+        <div class="muted">Itens: ${escapeHtml((s.itemsSold || []).join(", "))}</div>
+      </div>
+    `).join("")}
+  `;
+  openModal("Fornecedores", html);
+}
+
+function addSupplier() {
+  const name = (document.getElementById("sup-name").value || "").trim();
+  const itemsRaw = (document.getElementById("sup-items").value || "").trim();
+  if (!name) return;
+  const itemsSold = itemsRaw ? itemsRaw.split(",").map(x => x.trim()).filter(Boolean) : [];
+  state.suppliers.unshift({
+    id: "s_" + Date.now(),
+    name,
+    phone: "",
+    itemsSold
+  });
+  saveState("Fornecedor salvo");
+  openFornecedorModal();
+}
+
+/* 10. Notas Pagas */
+function openNotasPagasModal() {
+  const received = state.orders.filter(o => o.paid);
+  const paidSup = state.purchases.filter(p => p.status === "Paga");
+  const html = `
+    <div class="card-title">Sub-balão: Notas Recebidas (Clientes)</div>
+    ${received.length ? received.map(o => `
+      <div class="list-row">
+        <strong>#${escapeHtml(o.id)}</strong> • ${escapeHtml(o.clientName)} • <strong>${formatBRL(o.total)}</strong>
+        <button class="btn btn-secondary btn-sm" style="margin-top:6px;" onclick="print80mmReceipt('NOTA RECEBIDA', '${escapeHtml(o.clientName)}', ${o.total})">Imprimir 80mm (Tomate MDK-080)</button>
+      </div>
+    `).join("") : "<p class='muted'>Nenhuma nota recebida ainda.</p>"}
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:12px 0;">
+    <div class="card-title">Sub-balão: Notas Pagas (Fornecedores)</div>
+    ${paidSup.length ? paidSup.map(p => `
+      <div class="list-row">
+        <strong>${escapeHtml(p.supplierName)}</strong> — ${escapeHtml(p.itemName)} • <strong>${formatBRL(p.costTotal)}</strong>
+        <button class="btn btn-secondary btn-sm" style="margin-top:6px;" onclick="print80mmReceipt('NOTA PAGA FORNECEDOR', '${escapeHtml(p.supplierName)}', ${p.costTotal})">Imprimir 80mm (Tomate MDK-080)</button>
+      </div>
+    `).join("") : "<p class='muted'>Nenhuma nota paga a fornecedor ainda.</p>"}
+  `;
+  openModal("Notas Pagas & Recebidas", html);
+}
+
+function print80mmReceipt(title, party, amount) {
+  triggerPrintHtml(`
+    <div style="text-align:center;"><strong>${escapeHtml(state.company.name)}</strong><br>${escapeHtml(title)}</div>
+    <hr>
+    <div>Parte: ${escapeHtml(party)}<br>Data: ${new Date().toLocaleDateString("pt-BR")}<br>Valor: <strong>${formatBRL(amount)}</strong></div>
+    <hr>
+    <div style="text-align:center;">Pix / Copia e Cola:<br>${escapeHtml(state.company.pixKeyDefault || "00000000000")}</div>
+  `, true);
+}
+
+/* 11. Entregas Programadas */
+function openProgramadasModal() {
+  const html = state.scheduledDeliveries.map(s => `
+    <div class="list-row">
+      <strong>${escapeHtml(s.date)}</strong> • ${escapeHtml(s.clientName)} (${escapeHtml(s.city)})
+      <div class="muted">${escapeHtml(s.summary)}</div>
+      <div class="btn-row">
+        <button class="btn btn-primary btn-sm" onclick="promoteScheduled('${s.id}')">Promover para Pedidos e Prep Carga</button>
+      </div>
+    </div>
+  `).join("");
+  openModal("Entregas Programadas", html || "<p class='muted'>Sem entregas programadas.</p>");
+}
+
+function promoteScheduled(sdId) {
+  const idx = state.scheduledDeliveries.findIndex(x => x.id === sdId);
+  if (idx === -1) return;
+  const sd = state.scheduledDeliveries[idx];
+  state.orders.unshift({
+    id: "ord_prog_" + Date.now(),
+    date: new Date().toLocaleDateString("pt-BR"),
+    clientName: sd.clientName,
+    priority: "normal",
+    total: 150.00,
+    paid: false,
+    pixCode: state.company.pixKeyDefault,
+    items: [sd.summary]
+  });
+  state.routes[0].queue.push({
+    id: "q_prog_" + Date.now(),
+    clientName: sd.clientName,
+    city: sd.city,
+    productName: sd.summary,
+    qty: 1,
+    done: false,
+    resistant: false
+  });
+  state.scheduledDeliveries.splice(idx, 1);
+  saveState("Entrega promovida");
+  openProgramadasModal();
+}
+
+/* 12. Reclames */
+function openReclamesAdmModal() {
+  const html = `
+    <div class="btn-row" style="margin-bottom:10px;">
+      <button class="btn btn-danger btn-sm" onclick="clearAllReclames()">Limpar caixa de avisos / reclames</button>
+    </div>
+    ${state.reclames.length ? state.reclames.map(r => `
+      <div class="notice-item ${r.priority === "urgent" ? "urgent" : ""}">
+        <strong>${escapeHtml(r.author)}</strong> • ${escapeHtml(r.date)}
+        <p style="margin:4px 0 0 0;">${escapeHtml(r.message)}</p>
+      </div>
+    `).join("") : "<p class='muted'>Nenhum reclame salvo.</p>"}
+  `;
+  openModal("Reclames & Histórico", html);
+}
+
+function clearAllReclames() {
+  state.reclames = [];
+  saveState("Reclames limpos");
+  openReclamesAdmModal();
+}
+
+/* 13. Estoque */
+function openEstoqueModal() {
+  const now = Date.now();
+  const html = state.products.map(p => {
+    const idleDays = Math.floor((now - (p.lastSaleAt || now)) / 86400000);
+    const isIdle = idleDays >= 10 || p.stock <= p.minStock;
+    return `
+      <div class="list-row">
+        <strong>[${escapeHtml(p.code)}] ${escapeHtml(p.name)}</strong> — Estoque: <strong>${p.stock} ${escapeHtml(p.unit)}</strong>
+        <div>${isIdle ? `<span class="badge badge-warn">Atenção / Giro (${idleDays}d sem venda)</span>` : `<span class="badge badge-ok">Normal</span>`}</div>
+        <div class="field-group" style="margin-top:6px;margin-bottom:0;">
+          <label>Contagem física de balanço</label>
+          <input type="number" step="0.01" value="${p.stock}" onchange="updateBalanceStock('${p.id}', this.value)">
+        </div>
+      </div>
+    `;
+  }).join("");
+  openModal("Estoque & Balanço", html + `
+    <div class="btn-row">
+      <button class="btn btn-primary btn-sm" onclick="printStockA4()">Imprimir Estoque A4 (HP Smart Tank 489)</button>
+      <button class="btn btn-secondary btn-sm" onclick="printStock80mm()">Imprimir Estoque 80mm (Tomate MDK-080)</button>
+    </div>
+  `);
+}
+
+function updateBalanceStock(prodId, val) {
+  const p = state.products.find(x => x.id === prodId);
+  if (!p) return;
+  p.stock = Math.max(0, parseFloat(val) || 0);
+  saveState("Balanço atualizado");
+}
+
+function printStockA4() {
+  const rows = state.products.map(p => `<tr><td>${escapeHtml(p.code)}</td><td>${escapeHtml(p.name)}</td><td>${p.stock} ${escapeHtml(p.unit)}</td></tr>`).join("");
+  triggerPrintHtml(`<h2>Estoque — ${escapeHtml(state.company.name)}</h2><table border="1" cellpadding="6" style="width:100%;border-collapse:collapse;"><tr><th>Cód</th><th>Produto</th><th>Saldo</th></tr>${rows}</table>`, false);
+}
+
+function printStock80mm() {
+  const lines = state.products.map(p => `${escapeHtml(p.name)}: ${p.stock} ${escapeHtml(p.unit)}`).join("<br>");
+  triggerPrintHtml(`<div style="text-align:center;"><strong>ESTOQUE 80mm</strong></div><hr>${lines}`, true);
+}
+
+/* 14. Colaboradores (Novo / Editar + Padrao CLT com 80mm e cadastro guiado) */
+function openColaboradoresModal() {
+  const html = `
+    <div class="btn-row" style="margin-bottom:12px;">
+      <button class="btn btn-primary" onclick="openNewCollaboratorForm()">Novo</button>
+      <button class="btn btn-secondary" onclick="openEditCollaboratorPicker()">Editar</button>
+    </div>
+    ${state.users.map(u => `
+      <div class="list-row">
+        <strong>${escapeHtml(u.name)}</strong> • <span class="badge badge-ok">${escapeHtml(u.functionRole || u.role)}</span>
+        <div class="muted">PIN: ${escapeHtml(u.pin)} • Aniversário: ${escapeHtml(u.birthday || "-")} • Status: ${u.active ? "Ativo" : "Inativo"}</div>
+      </div>
+    `).join("")}
+  `;
+  openModal("Colaboradores", html);
+}
+
+function openNewCollaboratorForm() {
+  openModal("Novo Colaborador", `
+    <div class="field-group">
+      <label for="col-name">Nome completo</label>
+      <input id="col-name" type="text" placeholder="Nome do colaborador">
+    </div>
+    <div class="field-group">
+      <label for="col-pin">PIN de acesso</label>
+      <input id="col-pin" type="text" inputmode="numeric" placeholder="Ex.: 4444">
+    </div>
+    <div class="field-group">
+      <label for="col-bday">Aniversário (DD/MM)</label>
+      <input id="col-bday" type="text" placeholder="Ex.: 18/07">
+    </div>
+    <div class="field-group">
+      <label for="col-func">Função</label>
+      <select id="col-func" onchange="handleColFunctionChange()">
+        <option value="Operacional">Operacional</option>
+        <option value="Entrega / Rota">Entrega / Rota</option>
+        <option value="Padrão CLT">Padrão CLT</option>
+      </select>
+    </div>
+    <div id="clt-extra-box" style="display:none;background:#f4f8f5;padding:10px;border-radius:10px;margin-bottom:10px;">
+      <strong>Padrão CLT ativado</strong>
+      <div class="btn-row">
+        <button class="btn btn-warn btn-sm" onclick="printCltChecklist80mm()">Imprimir Lista de Documentos (80mm Tomate)</button>
+        <button class="btn btn-primary btn-sm" onclick="openGuidedCltWizard()">Cadastrar Padrão CLT (Passo a passo)</button>
+      </div>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="saveNewCollaborator()">Salvar Colaborador</button>
+  `);
+}
+
+function handleColFunctionChange() {
+  const sel = document.getElementById("col-func");
+  const box = document.getElementById("clt-extra-box");
+  if (!sel || !box) return;
+  box.style.display = sel.value === "Padrão CLT" ? "block" : "none";
+}
+
+function printCltChecklist80mm() {
+  triggerPrintHtml(`
+    <div style="text-align:center;"><strong>${escapeHtml(state.company.name)}</strong><br>DOCUMENTOS PADRÃO CLT</div>
+    <hr>
+    <div>
+      [ ] RG e CPF<br>
+      [ ] Comprovante de residência<br>
+      [ ] Carteira de Trabalho Digital / PIS<br>
+      [ ] Certidão de nascimento/casamento e filhos<br>
+      [ ] Título de eleitor / Reservista (se aplicável)<br>
+      [ ] Dados bancários / Vale-transporte<br>
+      [ ] Exame admissional (ASO)
+    </div>
+    <hr>
+    <div style="text-align:center;">Levar para conferência e admissão</div>
+  `, true);
+}
+
+const CLT_WIZARD_STEPS = [
+  { key: "nomeCompleto", label: "1. Nome completo do colaborador", placeholder: "Digite o nome completo" },
+  { key: "cpf", label: "2. CPF", placeholder: "000.000.000-00" },
+  { key: "rg", label: "3. RG / Órgão emissor", placeholder: "Número e órgão" },
+  { key: "pis", label: "4. PIS / NIS", placeholder: "Número do PIS" },
+  { key: "endereco", label: "5. Endereço completo", placeholder: "Rua, número, bairro, cidade" },
+  { key: "cargoCbo", label: "6. Cargo e CBO (para o contador)", placeholder: "Ex.: Auxiliar de logística" },
+  { key: "salario", label: "7. Salário base (R$)", placeholder: "Ex.: 1900.00" },
+  { key: "jornada", label: "8. Jornada e escala de trabalho", placeholder: "Ex.: Seg a Sex 08h-17h" }
+];
+
+let cltWizardIndex = 0;
+let cltWizardDraft = {};
+
+function openGuidedCltWizard() {
+  cltWizardIndex = 0;
+  cltWizardDraft = {};
+  renderCltWizardStep();
+}
+
+function renderCltWizardStep() {
+  const step = CLT_WIZARD_STEPS[cltWizardIndex];
+  const currentVal = cltWizardDraft[step.key] || "";
+  openModal(`Cadastrar Padrão CLT (${cltWizardIndex + 1}/${CLT_WIZARD_STEPS.length})`, `
+    <div class="field-group">
+      <label for="clt-step-input">${escapeHtml(step.label)}</label>
+      <input id="clt-step-input" type="text" value="${escapeHtml(currentVal)}" placeholder="${escapeHtml(step.placeholder)}"
+        onkeydown="if(event.key==='ArrowDown' || event.key==='Enter'){ event.preventDefault(); nextCltStep(); }">
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary btn-sm" onclick="nextCltStep()">↓ Próximo campo</button>
+      <button class="btn btn-primary btn-sm" onclick="nextCltStep()">Próximo</button>
+    </div>
+    <div class="muted" style="margin-top:8px;">Dica: use a setinha para baixo (↓) ou toque em Próximo até concluir.</div>
+  `);
+  setTimeout(() => {
+    const inp = document.getElementById("clt-step-input");
+    if (inp) inp.focus();
+  }, 50);
+}
+
+function nextCltStep() {
+  const inp = document.getElementById("clt-step-input");
+  const step = CLT_WIZARD_STEPS[cltWizardIndex];
+  if (inp) cltWizardDraft[step.key] = inp.value.trim();
+
+  if (cltWizardIndex < CLT_WIZARD_STEPS.length - 1) {
+    cltWizardIndex++;
+    renderCltWizardStep();
+  } else {
+    state.users.push({
+      id: "u_clt_" + Date.now(),
+      name: cltWizardDraft.nomeCompleto || "Colaborador CLT",
+      role: "clb",
+      pin: String(Math.floor(1000 + Math.random() * 9000)),
+      birthday: "01/01",
+      functionRole: "Padrão CLT",
+      active: true,
+      balloons: ["b_rotas", "b_retornos"],
+      cltData: Object.assign({}, cltWizardDraft)
+    });
+    saveState("Ficha CLT salva");
+    openModal("Ficha Padrão CLT Concluída", `<p>Dados registrados para envio ao contador:</p><pre style="white-space:pre-wrap;font-size:12px;">${escapeHtml(JSON.stringify(cltWizardDraft, null, 2))}</pre>`);
+  }
+}
+
+function saveNewCollaborator() {
+  const name = (document.getElementById("col-name").value || "").trim();
+  const pin = (document.getElementById("col-pin").value || "").trim() || String(Math.floor(1000 + Math.random() * 9000));
+  const birthday = (document.getElementById("col-bday").value || "01/01").trim();
+  const functionRole = document.getElementById("col-func").value;
+  if (!name) return;
+  state.users.push({
+    id: "u_" + Date.now(),
+    name,
+    role: "clb",
+    pin,
+    birthday,
+    functionRole,
+    active: true,
+    balloons: ["b_rotas", "b_retornos", "b_estoque"]
+  });
+  saveState("Colaborador salvo");
+  openColaboradoresModal();
+}
+
+function openEditCollaboratorPicker() {
+  const html = state.users.map(u => `
+    <div class="list-row" style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+      <div><strong>${escapeHtml(u.name)}</strong> <span class="muted">(${escapeHtml(u.functionRole || u.role)})</span></div>
+      <button class="btn btn-secondary btn-sm" onclick="promptEditUser('${u.id}')">Editar</button>
+    </div>
+  `).join("");
+  openModal("Editar Colaborador", html);
+}
+
+function promptEditUser(userId) {
+  const u = state.users.find(x => x.id === userId);
+  if (!u) return;
+  const newName = prompt("Nome:", u.name);
+  if (newName === null || !newName.trim()) return;
+  const newPin = prompt("PIN:", u.pin);
+  if (newPin === null || !newPin.trim()) return;
+  const newFunc = prompt("Função (ex.: Padrão CLT, Operacional):", u.functionRole || "Operacional");
+  u.name = newName.trim();
+  u.pin = newPin.trim();
+  if (newFunc && newFunc.trim()) u.functionRole = newFunc.trim();
+  saveState("Colaborador atualizado");
+  openColaboradoresModal();
+}
+
+/* 15. MEI & Notas A4 (20% sobre valor original + limite anual) */
+function openMeiModal() {
+  const limit = Number(state.company.meiLimitAnnual || 81000);
+  const used = Number(state.company.meiUsedAnnual || 0);
+  const pct = Math.min(100, Math.round((used / limit) * 100));
+  const badgeCls = pct >= 90 ? "badge-danger" : (pct >= 75 ? "badge-warn" : "badge-ok");
+
+  const html = `
+    <p>Limite anual MEI: <strong>${formatBRL(limit)}</strong> • Utilizado: <strong>${formatBRL(used)}</strong> (<span class="badge ${badgeCls}">${pct}%</span>)</p>
+    <div class="field-group">
+      <label for="mei-base-val">Valor original da carga / produtos (R$)</label>
+      <input id="mei-base-val" type="number" step="0.01" value="500.00">
+    </div>
+    <button class="btn btn-primary btn-block" onclick="generateMeiTransportA4()">Gerar Nota de Transporte MEI A4 (20% do valor)</button>
+  `;
+  openModal("MEI & Nota de Transporte A4", html);
+}
+
+function generateMeiTransportA4() {
+  const baseVal = parseFloat(document.getElementById("mei-base-val").value) || 0;
+  const noteVal20 = Number((baseVal * 0.20).toFixed(2));
+  const seq = String(state.company.meiNoteSeq || 1).padStart(6, "0");
+  state.company.meiNoteSeq = (state.company.meiNoteSeq || 1) + 1;
+  saveState("Sequência MEI avançada");
+
+  const dest = state.routes[0] ? state.routes[0].lastCity : "Destino";
+  triggerPrintHtml(`
+    <h2>NOTA DE TRANSPORTE / DOCUMENTO AUXILIAR (A4)</h2>
+    <p><strong>Emitente:</strong> ${escapeHtml(state.company.name)} • CNPJ/MEI: ${escapeHtml(state.company.cnpjMei)} • Seq: ${seq}</p>
+    <p><strong>Destino da Rota:</strong> ${escapeHtml(dest)} • <strong>Data:</strong> ${new Date().toLocaleDateString("pt-BR")}</p>
+    <hr>
+    <p>Valor original de referência: <strong>${formatBRL(baseVal)}</strong></p>
+    <p>Valor calculado na nota (20% — compensação fornecedor rural sem NF): <strong>${formatBRL(noteVal20)}</strong></p>
+  `, false);
+}
+
+/* 16. Relatorio Financeiro Diario A4 (HP Smart Tank 489) */
+function openRelatorioA4Modal() {
+  const grossSales = state.orders.reduce((s, o) => s + Number(o.total || 0), 0);
+  const costSales = state.purchases.reduce((s, p) => s + Number(p.costTotal || 0), 0);
+  const totalExpenses = state.expenses.reduce((s, e) => s + Number(e.amount || 0), 0);
+  const realProfit = grossSales - costSales - totalExpenses;
+  const receivedSum = state.orders.filter(o => o.paid).reduce((s, o) => s + Number(o.total || 0), 0);
+  const receivableSum = state.orders.filter(o => !o.paid).reduce((s, o) => s + Number(o.total || 0), 0);
+
+  const reportHtml = `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+      <div>
+        <h3 style="margin:0;">Relatório Financeiro Diário (A4)</h3>
+        <div class="muted">Data: ${new Date().toLocaleDateString("pt-BR")} • Impressora: HP Smart Tank 489</div>
+      </div>
+      <strong>${escapeHtml(state.company.name)}</strong>
+    </div>
+    <hr>
+    <p>Vendas Brutas: <strong>${formatBRL(grossSales)}</strong></p>
+    <p>Custo de Mercadorias / Compras: <strong>${formatBRL(costSales)}</strong></p>
+    <p>Despesas Especificadas: <strong>${formatBRL(totalExpenses)}</strong></p>
+    <p>Lucro Real Apurado: <strong>${formatBRL(realProfit)}</strong></p>
+    <p>Notas Recebidas: <strong>${formatBRL(receivedSum)}</strong> • Notas a Receber: <strong>${formatBRL(receivableSum)}</strong></p>
+    <p style="margin-top:24px;">Assinatura do ADM: ____________________________________</p>
+  `;
+
+  openModal("Relatório Financeiro Diário (A4)", `
+    <div class="print-area">${reportHtml}</div>
+    <button class="btn btn-primary btn-block" style="margin-top:10px;" onclick="triggerPrintHtml(\`${reportHtml.replace(/`/g, "")}\`, false)">Imprimir Relatório A4</button>
+  `);
+}
+
+/* 17. Area de Seguranca Exclusiva do Criador (Sigla + Senha + PIN) */
+function openSecurityGateModal() {
+  openModal("Área de Segurança — Acesso do Criador", `
+    <p class="muted">Acesso exclusivo do Criador do sistema. O perfil ADM Master não abre esta área automaticamente.</p>
+    <div class="field-group">
+      <label for="sec-sigla">Sigla do Criador</label>
+      <input id="sec-sigla" type="text" placeholder="Ex.: CRI">
+    </div>
+    <div class="field-group">
+      <label for="sec-pass">Senha do Criador</label>
+      <input id="sec-pass" type="password" placeholder="Senha">
+    </div>
+    <div class="field-group">
+      <label for="sec-pin">PIN do Criador</label>
+      <input id="sec-pin" type="password" inputmode="numeric" placeholder="PIN">
+    </div>
+    <button class="btn btn-primary btn-block" onclick="verifyCreatorSecurity()">Validar Acesso do Criador</button>
+  `);
+}
+
+function verifyCreatorSecurity() {
+  const sigla = (document.getElementById("sec-sigla").value || "").trim().toUpperCase();
+  const pass = (document.getElementById("sec-pass").value || "").trim();
+  const pin = (document.getElementById("sec-pin").value || "").trim();
+
+  if (
+    sigla === (state.creator.sigla || "").toUpperCase() &&
+    pass === (state.creator.senha || "") &&
+    pin === (state.creator.pin || "")
+  ) {
+    openCreatorSecurityPanel();
+  } else {
+    openModal("Acesso negado", "<p>Sigla, senha ou PIN do Criador não conferem.</p>");
+  }
+}
+
+function openCreatorSecurityPanel() {
+  const adm1 = state.users.find(u => u.role === "adm_master") || state.users[0];
+  openModal("Área de Segurança do Criador", `
+    <div class="list-row">
+      <strong>1. Editar o editor (Criador)</strong>
+      <div class="field-group" style="margin-top:6px;">
+        <label>Sigla</label>
+        <input id="cr-sigla" type="text" value="${escapeHtml(state.creator.sigla)}">
+      </div>
+      <div class="field-group">
+        <label>Senha</label>
+        <input id="cr-pass" type="text" value="${escapeHtml(state.creator.senha)}">
+      </div>
+      <div class="field-group">
+        <label>PIN</label>
+        <input id="cr-pin" type="text" value="${escapeHtml(state.creator.pin)}">
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="saveCreatorEdits()">Salvar dados do editor</button>
+    </div>
+
+    <div class="list-row">
+      <strong>2. Editar ADM Master</strong>
+      <div class="field-group" style="margin-top:6px;">
+        <label>Nome do ADM Master</label>
+        <input id="adm1-name" type="text" value="${escapeHtml(adm1 ? adm1.name : "")}">
+      </div>
+      <div class="field-group">
+        <label>PIN do ADM Master</label>
+        <input id="adm1-pin" type="text" value="${escapeHtml(adm1 ? adm1.pin : "")}">
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="saveAdmMasterEdits()">Salvar ADM Master</button>
+    </div>
+
+    <div class="list-row">
+      <strong>3. Editar empresa administradora</strong>
+      <div class="field-group" style="margin-top:6px;">
+        <label>Nome da empresa</label>
+        <input id="emp-name" type="text" value="${escapeHtml(state.company.name)}">
+      </div>
+      <div class="field-group">
+        <label>CNPJ / MEI</label>
+        <input id="emp-cnpj" type="text" value="${escapeHtml(state.company.cnpjMei)}">
+      </div>
+      <div class="field-group">
+        <label>WhatsApp da empresa</label>
+        <input id="emp-wpp" type="text" value="${escapeHtml(state.company.phoneWhats)}">
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="saveCompanyEdits()">Salvar empresa</button>
+    </div>
+
+    <div class="list-row" style="border-color:var(--danger);">
+      <strong>4. Redefinir o aplicativo</strong>
+      <p class="muted">Zera cadastros, movimentações, estoque e histórico para recomeçar uma nova empresa do zero.</p>
+      <button class="btn btn-danger btn-block" onclick="resetAppToZero()">Redefinir aplicativo agora</button>
+    </div>
+  `);
+}
+
+function saveCreatorEdits() {
+  state.creator.sigla = (document.getElementById("cr-sigla").value || state.creator.sigla).trim().toUpperCase();
+  state.creator.senha = (document.getElementById("cr-pass").value || state.creator.senha).trim();
+  state.creator.pin = (document.getElementById("cr-pin").value || state.creator.pin).trim();
+  saveState("Dados do editor salvos");
+  openModal("Salvo", "<p>Credenciais do Criador atualizadas.</p>");
+}
+
+function saveAdmMasterEdits() {
+  const adm1 = state.users.find(u => u.role === "adm_master") || state.users[0];
+  if (!adm1) return;
+  adm1.name = (document.getElementById("adm1-name").value || adm1.name).trim();
+  adm1.pin = (document.getElementById("adm1-pin").value || adm1.pin).trim();
+  saveState("ADM Master atualizado");
+  openModal("Salvo", "<p>Dados do ADM Master atualizados.</p>");
+}
+
+function saveCompanyEdits() {
+  state.company.name = (document.getElementById("emp-name").value || state.company.name).trim();
+  state.company.cnpjMei = (document.getElementById("emp-cnpj").value || state.company.cnpjMei).trim();
+  state.company.phoneWhats = (document.getElementById("emp-wpp").value || state.company.phoneWhats).trim();
+  saveState("Empresa atualizada");
+  renderTopChrome();
+  openModal("Salvo", "<p>Dados da empresa atualizados.</p>");
+}
+
+function resetAppToZero() {
+  if (!confirm("Tem certeza que deseja redefinir o aplicativo e limpar os dados para uma nova empresa?")) return;
+  const fresh = createInitialState();
+  fresh.creator = Object.assign({}, state.creator);
+  fresh.products = [];
+  fresh.clients = [];
+  fresh.suppliers = [];
+  fresh.orders = [];
+  fresh.purchases = [];
+  fresh.expenses = [];
+  fresh.reclames = [];
+  fresh.notices = [];
+  fresh.returns = [];
+  fresh.scheduledDeliveries = [];
+  fresh.company.name = "Nova Empresa";
+  fresh.company.meiUsedAnnual = 0;
+  fresh.activeTab = "login";
+  fresh.session = { role: null, userName: "", userId: null, clientSince: new Date().toLocaleDateString("pt-BR") };
+  state = fresh;
+  saveState("Aplicativo redefinido");
+  closeModal();
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
